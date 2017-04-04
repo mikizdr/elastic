@@ -1,0 +1,66 @@
+PUT city_data
+{
+  "mappings": {
+    "city": {
+      "properties": {
+        "city-suggest": {
+          "type": "completion"
+        },
+        "count": {
+          "type": "long"
+        },
+        "city": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
+
+
+
+Logstash to index data :
+input { 
+    file {
+    path => "/home/mpianka/city.csv"
+    start_position => "beginning"
+    sincedb_path => "/dev/null"
+ type => "city"
+  }  
+   }
+
+   filter {
+  csv {
+    separator => ","
+    columns => ["city","count"]
+  }
+    mutate{
+  add_field => { "city-suggest" => "%{city}" }
+        }
+    mutate{
+  split => { "city-suggest" => " " }
+        }
+  
+}
+output {
+  stdout { codec => rubydebug }
+    elasticsearch {
+ "hosts" => "localhost:9000"
+   "index" => "city_data"
+  }
+}
+
+
+
+Search query :
+POST city_data/_search?pretty
+{
+    "suggest": {
+        "suggest-result" : {
+            "prefix" : "in",
+            "completion" : {
+                "field" : "city-suggest"
+            }
+        }
+    }
+}

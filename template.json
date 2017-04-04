@@ -1,0 +1,54 @@
+# template for Edge NGram filter
+
+PUT /_template/city
+{
+  "order": 0,
+  "template": "city",
+  "settings": {
+    "analysis": {
+      "filter": {
+        "autocomplete_filter": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 20
+        }
+      },
+      "analyzer": {
+        "autocomplete": { 
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "autocomplete_filter"
+          ]
+        }
+      }
+    },
+    "index": {
+      "refresh_interval": "5s",
+      "number_of_shards": "1",
+      "number_of_replicas": "0"
+    }
+  },
+  "mappings": {
+    "data": {
+      "properties": {
+        "city": {
+          "type": "text",
+          "analyzer": "autocomplete", 
+          "search_analyzer": "standard",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "count": {
+          "type": "long"
+        }
+      }
+    }
+  },
+  "aliases": {}
+}
