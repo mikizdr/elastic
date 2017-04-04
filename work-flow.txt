@@ -1,0 +1,106 @@
+Things you shold know:
+
+1. Install Elasticsearch
+2. Install Kibana
+3. Install Logstash
+4. Mapping data
+5. Indexing data
+6. Filtering data (autocomplet...)
+7. Tokenizer
+8. Create query
+
+GET /_search
+{
+    "query": {
+        "match_phrase_prefix" : {
+            "message" : "quick brown f"
+        }
+    }
+}
+
+GET _cat/indices/city
+
+
+GET city/_search
+{
+    "query": {
+        "match_phrase_prefix" : {
+            "city" : "ne"
+        }
+    },
+    "sort" : [
+      {"count" : {"order" : "desc"}}
+   ]
+}
+
+PUT /_template/city
+{
+  "order": 0,
+  "template": "city",
+  "settings": {
+    "analysis": {
+      "filter": {
+        "autocomplete_filter": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 20
+        }
+      },
+      "analyzer": {
+        "autocomplete": { 
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "autocomplete_filter"
+          ]
+        }
+      }
+    },
+    "index": {
+      "refresh_interval": "5s",
+      "number_of_shards": "1",
+      "number_of_replicas": "0"
+    }
+  },
+  "mappings": {
+    "data": {
+      "properties": {
+        "city": {
+          "type": "text",
+          "analyzer": "autocomplete", 
+          "search_analyzer": "standard",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "count": {
+          "type": "long"
+        }
+      }
+    }
+  },
+  "aliases": {}
+}
+
+==================================
+I just want to ask you about Elastic Completion Sugester - https://www.elastic.co/guide/en/elasticsearch/reference/current/search-suggesters-completion.html
+Did you use it in setting up Elasticserach environment? I mean, do we have it in our project?
+ 
+*** Prashant
+No
+This is other way of autocomplete
+And this works very good when we need it for multi word sentence
+But for our use as as city could be maximum one word or 2 or so
+So what this autocomplete does,
+Say you have title field " hello my name is Prashant" then it will make analyzed to store the word as hello , my, name , Prashant
+So of someone searches prashant , it will suggest hello my name is Prashant
+For single or few words I mostly use ngram
+But over and above both does same thing
+***
+
+
+
