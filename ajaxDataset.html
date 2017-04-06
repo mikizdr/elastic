@@ -68,56 +68,70 @@
     </style>
 
     <script>
+
+        
     
-    function showHint(str) {
-    
-        // Get the <datalist> and <input> elements.
-        var dataList = document.getElementById('json-datalist');
-        var input = document.getElementById('ajax');
+        function showHint(str) {         
 
-        // Create a new XMLHttpRequest.
-        var request = new XMLHttpRequest();
-
-        // Handle state changes for the request.
-        request.onreadystatechange = function (response) {
-            if (request.readyState === 4) {
-                if (request.status === 200) {
-                    // Parse the JSON
-                    var jsonOptions = request.responseText;
-
-                    console.log(jsonOptions.length);
-
-                    // Loop over the JSON array.
-                    for (var i = 0; i < jsonOptions.length; i++) {
-
-                        var obj = jsonOptions[i];
-                        
-                        console.log(i + 1 + ": " + obj.city + " -> " + obj.count);
-                        
-                        // Create a new <option> element.
-                        //var option = document.createElement('option');
-                        // Set the value using the item in the JSON array.
-                        //option.value = item;
-                        // Add the <option> element to the <datalist>.
-                        //dataList.appendChild(option);
-                    };
-
-                    // Update the placeholder text.
-                    input.placeholder = "e.g. datalist";
-                } else {
-                    // An error occured :(
-                    input.placeholder = "Couldn't load datalist options :(";
-                }
+            // removes all child elements from datalist node
+            var node = document.getElementById("json-datalist");
+            if(node.hasChildNodes()) {
+                while (node.hasChildNodes()) {
+                    node.removeChild(node.lastChild);
+                }   
             }
-        };
+        
+            // Get the <datalist> and <input> elements.
+            var dataList = document.getElementById('json-datalist');
+            var input = document.getElementById('ajax');
 
-        // Update the placeholder text.
-        //input.placeholder = "Loading options...";
+            // Create a new XMLHttpRequest.
+            var request = new XMLHttpRequest();
 
-        // Set up and make the request.
-        request.open('GET', 'cities.json.php', true);
-        request.send();
-    }
+            // Handle state changes for the request.
+            request.onreadystatechange = function (response) {
+                if (request.readyState === 4) {
+                    if (request.status === 200) {
+                        
+                        // Parse the JSON
+                        var jsonOptions = JSON.parse(request.responseText);
+
+                        //console.log(jsonOptions.length);
+
+                        // Loop over the JSON array.
+                        for (var i = 0; i < jsonOptions.length; i++) {
+
+                            var obj = jsonOptions[i];
+                            
+                            // Create a new <option> element.
+                            var option = document.createElement('option');
+                            // Set the value using the item in the JSON array.
+                            option.value = obj.city + " -> " + obj.count;
+                            // Add the <option> element to the <datalist>.
+                            dataList.appendChild(option);
+                        };
+
+                        // Update the placeholder text.
+                        input.placeholder = "e.g. datalist";
+                    } else {
+                        // An error occured :(
+                        input.placeholder = "Couldn't load datalist options :(";
+                    }
+                }
+            };
+
+            // Update the placeholder text.
+            input.placeholder = "Loading options...";
+
+            // Set up and make the request.
+            request.open('GET', 'cities.json.50.php?q='+str, true);
+            request.send();
+
+            
+
+        }
+
+        
     </script>
 
   </head>
