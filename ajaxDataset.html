@@ -83,19 +83,24 @@
             if (request.readyState === 4) {
                 if (request.status === 200) {
                     // Parse the JSON
-                    var jsonOptions = JSON.parse(request.responseText);
+                    var jsonOptions = request.responseText;
 
                     console.log(jsonOptions.length);
 
                     // Loop over the JSON array.
-                    jsonOptions.forEach(function (item) {
+                    for (var i = 0; i < jsonOptions.length; i++) {
+
+                        var obj = jsonOptions[i];
+                        
+                        console.log(i + 1 + ": " + obj.city + " -> " + obj.count);
+                        
                         // Create a new <option> element.
-                        var option = document.createElement('option');
+                        //var option = document.createElement('option');
                         // Set the value using the item in the JSON array.
-                        option.value = item;
+                        //option.value = item;
                         // Add the <option> element to the <datalist>.
-                        dataList.appendChild(option);
-                    });
+                        //dataList.appendChild(option);
+                    };
 
                     // Update the placeholder text.
                     input.placeholder = "e.g. datalist";
