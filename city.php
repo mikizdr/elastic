@@ -26,7 +26,7 @@ $client = ClientBuilder::create()
 
 $char = $_GET['c'];
 
-/* # template for Edge NGram 
+ # template for Edge NGram 
 
 $city = [
     'index' => 'city',
@@ -49,9 +49,9 @@ $city = [
     ]
 ];    
 
-*/
 
-/* # template for Completion Suggester
+
+ # template for Completion Suggester
 $city = [
     'suggest' => [
         'suggest-result' => [
@@ -62,9 +62,8 @@ $city = [
         ]
     ]
 ];  
-*/
 
-/* # template for Edge NGram 
+# template for Edge NGram 
 
 $count = [
     'body' => [
@@ -76,9 +75,9 @@ $count = [
     ]
 ]; 
 
-*/ 
 
-/* # template for Completion Suggester 
+
+# template for Completion Suggester 
 $count = [
     'suggest' => [
         'suggest-result' => [
@@ -89,13 +88,13 @@ $count = [
         ]
     ]
 ];  
-*/
 
-//$num = $client->count($count);
 
-//$responses = $client->search($city);
+$num = $client->count($count);
 
-/*if ($num['count']!=0) {
+$responses = $client->search($city);
+
+if ($num['count']!=0) {
 
     $responses = $client->search($city);
 
@@ -117,10 +116,10 @@ $count = [
 
     echo json_encode($array);
 }
-*/
 
 
-/*
+
+
 $milliseconds = $responses['took'];
 $maxScore     = $responses['hits']['max_score'];
 $shards       = $responses['_shards']['total'];
@@ -138,15 +137,15 @@ $array[] = array (
     'label' => $label,
     'value' => $value
 );
-*/
 
 
 
 
 
-//$hits  = $responses['hits']['total'];
 
-//if ($hits!=0) {
+$hits  = $responses['hits']['total'];
+
+if ($hits!=0) {
 
     /*$label   = $responses['hits']['hits'][0]['_source']['city'];
     $value   = $responses['hits']['hits'][0]['_source']['count'];
@@ -156,6 +155,6 @@ $array[] = array (
         'value' => $value
     );*/
     echo json_encode($char);
-/*} else {
+} else {
     echo "Nothing found.";
-}*/
+}

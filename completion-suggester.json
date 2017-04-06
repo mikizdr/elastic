@@ -1,3 +1,5 @@
+
+// mappings
 PUT city_data
 {
   "mappings": {

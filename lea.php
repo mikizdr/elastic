@@ -19,47 +19,33 @@ $client = ClientBuilder::create()
                         ->setLogger($logger)
                         ->setSerializer($serializer)
                         ->build();
-$char = $_GET['q'];
+
+//$char = $_GET['c'];
+
+# body for API
+$city = [
+    'index' => 'city_data',
+    'type' => 'data',
+    'body' => [
+        'suggest' => [
+            'suggest-result' => [
+                'prefix' => 'new'          
+            ],
+            'completion' => [
+                    'field' => 'city-suggest'
+            ]
+        ]
+    ]
+];    
+
+//$responses = $client->search($city);
 
 /*
     index a document INDEX
 */    
-$params1 = [
-    'index' => 'customer',
-    'type' => 'external',
-    'id' => '2',
-    'body' => [
-        'id' => '3',
-        'name' => 'kokoda'
-        ]
-];
-
-$params1 = [
-    'index' => 'customer',
-    'type' => 'external',
-    'id' => '3',
-    'body' => [
-        'doc' => [
-            'id' => '30',
-            'name' => 'kakadu'
-        ]
-    ]
-];
-
-
-
-//$response = $client->index($params);
-//print_r($response);
-
-/*
-    Getting Documents
-*/
-
 $params = [
-    'index' => 'customer',
-    'type' => 'external',
-    'id' => 2
+    'index' => 'city_data'
 ];
 
-$response = $client->get($params);
-print_r(json_encode($response));
+$response = $client->get($city);
+print_r($response);
