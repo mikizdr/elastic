@@ -1,0 +1,59 @@
+{
+  "took": 12,
+  "timed_out": false,
+  "_shards": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0
+  },
+  "hits": {
+    "total": 4,
+    "max_score": 4.3100996,
+    "hits": [
+      {
+        "_index": "bank",
+        "_type": "account",
+        "_id": "472",
+        "_score": 4.3100996,
+        "_source": {
+          "firstname": "Lee",
+          "balance": 25571,
+          "lastname": "Long"
+        }
+      },
+      {
+        "_index": "bank",
+        "_type": "account",
+        "_id": "136",
+        "_score": 4.2662063,
+        "_source": {
+          "firstname": "Winnie",
+          "balance": 45801,
+          "lastname": "Holland"
+        }
+      },
+      {
+        "_index": "bank",
+        "_type": "account",
+        "_id": "970",
+        "_score": 3.861861,
+        "_source": {
+          "firstname": "Forbes",
+          "balance": 19648,
+          "lastname": "Wallace"
+        }
+      },
+      {
+        "_index": "bank",
+        "_type": "account",
+        "_id": "345",
+        "_score": 3.861861,
+        "_source": {
+          "firstname": "Parker",
+          "balance": 9812,
+          "lastname": "Hines"
+        }
+      }
+    ]
+  }
+}
