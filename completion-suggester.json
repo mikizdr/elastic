@@ -21,48 +21,56 @@ PUT city_data
 
 
 
-Logstash to index data :
+// Logstash to index data :
 input { 
     file {
     path => "/home/mpianka/city.csv"
     start_position => "beginning"
     sincedb_path => "/dev/null"
- type => "city"
-  }  
-   }
+    type => "city"
+    }  
+}
 
-   filter {
-  csv {
+filter {
+    csv {
     separator => ","
     columns => ["city","count"]
-  }
+    }
     mutate{
-  add_field => { "city-suggest" => "%{city}" }
-        }
+      add_field => { "city-suggest" => "%{city}" }
+    }
     mutate{
-  split => { "city-suggest" => " " }
-        }
-  
+      split => { "city-suggest" => " " }
+    } 
 }
 output {
-  stdout { codec => rubydebug }
+    stdout { codec => rubydebug }
     elasticsearch {
- "hosts" => "localhost:9000"
-   "index" => "city_data"
+    "hosts" => "localhost:9000"
+    "index" => "city_data"
   }
 }
 
 
 
-Search query :
-POST city_data/_search?pretty
+// Search query :
+POST city_data/_search
 {
     "suggest": {
         "suggest-result" : {
-            "prefix" : "in",
+            "prefix" : "new y",
             "completion" : {
-                "field" : "city-suggest"
+                "field" : "city-suggest",
+            "size" : 10
             }
         }
-    }
+    },
+    "sort": [
+      {
+        "count": {
+          "order": "desc"
+        }
+      }
+    ],
+    "_source": ["city", "city-suggest", "count"]
 }

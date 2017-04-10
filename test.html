@@ -28,7 +28,7 @@ function showHint(str) {
         document.getElementById("txtHint").innerHTML = this.responseText;
     }
   };
-  xhttp.open("GET", "lea.php?c="+str, true);
+  xhttp.open("GET", "lea.suggests.php?c="+str, true);
   xhttp.send();   
 }
 </script>
